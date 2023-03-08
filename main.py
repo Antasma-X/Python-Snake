@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from config import *
+import snake
 
 pygame.init()
 screen = pygame.display.set_mode(screenSize)
