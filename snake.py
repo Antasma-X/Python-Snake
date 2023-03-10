@@ -4,11 +4,16 @@ import random
 
 class Apple:
     score=0
+    font=pygame.font.Font(None,50)
+    scoreLabel=font.render(f"Score:{score}",True,"White")
     def __init__(self) -> None:
         self.surf=pygame.Surface(config.defaultSize)
         self.location=(60,60)
         self.rect=self.surf.get_rect(topleft=self.location)
 
+
+    def showScore(screen):
+        screen.blit(Apple.scoreLabel,(660,0))
         
     def spawn(self,s):
         
@@ -19,12 +24,14 @@ class Apple:
             break
         return (x,y)
     
-    def collide(self,s):
+    def collide(self,screen,s):
 
         if self.rect.colliderect(s.headRect):
             Apple.score+=1
             self.location=self.spawn(s)            
             self.rect=self.surf.get_rect(topleft=self.location)
+            Apple.scoreLabel=Apple.font.render(f"Score:{Apple.score}",True,"White")
+            Apple.showScore(screen)
 
             s.snake.append(pygame.Surface(config.defaultSize))
             s.location.append([s.location[-1][0]+20*s.directionX,s.location[-1][1]+20*s.directionY])
@@ -53,18 +60,16 @@ class Snake:
                 if event.key==pygame.K_DOWN:
                     self.directionX=0
                     self.directionY=1
-                if event.key==pygame.K_UP:
+                elif event.key==pygame.K_UP:
                     self.directionX=0
                     self.directionY=-1
-                if event.key==pygame.K_RIGHT:
+                elif event.key==pygame.K_RIGHT:
                     self.directionX=1
                     self.directionY=0
-                if event.key==pygame.K_LEFT:
+                elif event.key==pygame.K_LEFT:
                     self.directionX=-1
                     self.directionY=0
-                if event.key==pygame.K_BACKSPACE:
-                    self.snake.append(pygame.Surface(config.defaultSize))
-                    self.location.append([self.location[-1][0]+20*self.directionX,self.location[-1][1]+20*self.directionY])
+                
 
     def print(self,screen):
         temp=self.snake.pop(0)
