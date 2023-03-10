@@ -19,9 +19,9 @@ a=snake.Apple()
 
 
 
-running = True
 
-while running:
+
+while True:
     screen.fill("Black")
     s.switchScreen()
     s.move()
@@ -31,10 +31,8 @@ while running:
     a.print(screen)
     snake.Apple.showScore(screen)
     pygame.display.update()
-
-
     clock.tick(config.framerate)
 
 
-pygame.quit()
+
 
