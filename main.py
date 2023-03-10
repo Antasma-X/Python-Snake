@@ -19,9 +19,9 @@ a=snake.Apple()
 
 
 
-running = True
 
-while running:
+
+while True:
     screen.fill("Black")
     s.switchScreen()
     s.move()
@@ -36,5 +36,5 @@ while running:
     clock.tick(config.framerate)
 
 
-pygame.quit()
+
 
