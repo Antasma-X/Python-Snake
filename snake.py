@@ -1,13 +1,39 @@
 import pygame
 import config
-class apple:
+import random
+
+class Apple:
     score=0
     def __init__(self) -> None:
-        self.location=0
+        self.surf=pygame.Surface(config.defaultSize)
+        self.location=(60,60)
+        self.rect=self.surf.get_rect(topleft=self.location)
 
-    def spawn(self):
-        pass
         
+    def spawn(self,s):
+        
+        while True:
+            x=random.randrange(0,800,20)
+            y=random.randrange(0,500,20)
+            if len(list(filter(lambda a:(x,y)==a,s.location))):continue
+            break
+        return (x,y)
+    
+    def collide(self,s):
+
+        if self.rect.colliderect(s.headRect):
+            Apple.score+=1
+            self.location=self.spawn(s)            
+            self.rect=self.surf.get_rect(topleft=self.location)
+
+            s.snake.append(pygame.Surface(config.defaultSize))
+            s.location.append([s.location[-1][0]+20*s.directionX,s.location[-1][1]+20*s.directionY])
+    
+    def print(self,screen):
+        screen.blit(self.surf,self.location)
+        self.surf.fill("Red")
+
+
 class Snake:
 
     def __init__(self) -> None:
@@ -15,6 +41,7 @@ class Snake:
         self.location=[config.defaultSnakeLocation]
         self.directionX=1
         self.directionY=0
+        self.headRect=self.snake[-1].get_rect(topleft=(self.location[-1]))
 
     def move(self):
         for event in pygame.event.get():
@@ -46,13 +73,15 @@ class Snake:
         self.location.append([self.location[-1][0]+20*self.directionX,self.location[-1][1]+20*self.directionY])
         self.location.pop(0)
 
+        self.headRect=self.snake[-1].get_rect(topleft=(self.location[-1]))
+
         for i in range(len(self.snake)):
             self.snake[i].fill('White')
             screen.blit(self.snake[i],tuple(self.location[i]))
     
     def switchScreen(self):
         if self.location[-1][0]<0:self.location[-1][0]=config.screenSize[0]
-        if self.location[-1][0]>750:self.location[-1][0]=0
+        if self.location[-1][0]>800:self.location[-1][0]=0
         if self.location[-1][1]<0:self.location[-1][1]=config.screenSize[1]
         if self.location[-1][1]>500:self.location[-1][1]=0  
             

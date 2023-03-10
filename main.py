@@ -12,6 +12,7 @@ clock=pygame.time.Clock()
 
 keys = pygame.key.get_pressed()
 s=snake.Snake()
+a=snake.Apple()
 
 
 
@@ -22,6 +23,8 @@ while running:
     s.move()
     s.print(screen)
     s.death()
+    a.collide(s)
+    a.print(screen)
     pygame.display.update()
 
 
